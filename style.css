@@ -9,4 +9,12 @@ h1, p {
   text-align: center;
   line-height: 200rpx
 }
-
+.map-div{
+  display: flex;
+}
+.map-div span{
+  display: block;
+  width: 100px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ccc;
+}
