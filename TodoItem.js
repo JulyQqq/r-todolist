@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 class TodoItem extends Component {
   render() {
-    const { content, listData, deleteData } = this.props;
-    return (
-      <div>
-        {listData.map((ele, index) => {
-          return (
-            <div key={index + "a"}>
-              <span>{ele}</span>
-              <button onClick={() => deleteData(index)}>删除</button>
-            </div>
-          );
-        })}
-      </div>
-    );
+    const { content, deleteData, index } = this.props;
+    return <div onClick={() => deleteData(index)}>{content}</div>;
   }
 }
- TodoItem.propTypes = {
-    listData:PropTypes.array,
-}
+TodoItem.propTypes = {
+  listData: PropTypes.array
+};
 export default TodoItem;

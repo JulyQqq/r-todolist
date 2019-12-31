@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import TodoItem from "./TodoItem";
 import Table from "./Table";
+import Test from "./Test";
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       inputVal: "",
-      list: ["111", "222ll"],
+      list: [],
       tableData: [
         { name: "jack", job: "developmenter" },
         { name: "rose", job: "teacher" }
@@ -18,29 +19,48 @@ class TodoList extends Component {
     const { inputVal, list, tableData } = this.state;
     return (
       <div>
-        <input value={inputVal} type="text" onChange={this.handleInput} />
+        <input
+          value={inputVal}
+          type="text"
+          onChange={this.handleInput}
+          ref={input => {
+            this.input = input;
+          }}
+        />
         <button onClick={this.handleAdd}>添加</button>
-        <div>
-          <TodoItem listData={list} deleteData={this.deleteData} />
-        </div>
-        <Table tableDatas={tableData} removeData={this.removeData} />
+        <ul
+          ref={(ul) => {
+            this.ul = ul;
+          }}
+        >
+          {this.getTodoItem()}
+        </ul>
+        {
+          // <Test content={this.state.inputVal}/>
+          // <Table tableDatas={tableData} removeData={this.removeData} />
+        }
       </div>
     );
   }
   handleInput = e => {
-    const { value } = e.target;
+    // const { value } = e.target;
+    const { value } = this.input; //不推荐ref操作dom
     this.setState({
       inputVal: value
     });
   };
   handleAdd = () => {
-    let { inputVal, list } = this.state;
-    this.setState({
-      list: [...list, inputVal],
-      inputVal: ""
-    });
+    this.setState(
+      prevState => ({
+        list: [...prevState.list, prevState.inputVal],
+        inputVal: ""
+      }),
+      () => {
+        console.log(this.ul.querySelectorAll("div").length);
+      }
+    );
   };
-  deleteData = i => {
+  handleDelete = i => {
     let { list } = this.state;
     this.setState({
       list: list.filter((ele, index) => {
@@ -56,5 +76,17 @@ class TodoList extends Component {
       })
     });
   };
+  getTodoItem() {
+    return this.state.list.map((item, index) => {
+      return (
+        <TodoItem
+          key={item}
+          content={item}
+          index={index}
+          deleteData={this.handleDelete}
+        />
+      );
+    });
+  }
 }
 export default TodoList;

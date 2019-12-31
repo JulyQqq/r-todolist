@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-// import TodoList from './TodoList';
+import TodoList from './TodoList';
 import Like from "./Like";
 import MapList from "./MapList";
 import "./style.css";
@@ -30,4 +30,4 @@ class Index extends Component {
     console.log("component will unmount");
   }
 }
-render(<Index />, document.getElementById("root"));
+render(<TodoList />, document.getElementById("root"));
