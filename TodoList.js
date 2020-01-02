@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TodoItem from "./TodoItem";
 import Table from "./Table";
 import Test from "./Test";
+import axios from "axios";
 
 class TodoList extends Component {
   constructor(props) {
@@ -28,19 +29,25 @@ class TodoList extends Component {
           }}
         />
         <button onClick={this.handleAdd}>添加</button>
-        <ul
-          ref={(ul) => {
-            this.ul = ul;
-          }}
-        >
-          {this.getTodoItem()}
-        </ul>
+        <ul>{this.getTodoItem()}</ul>
         {
           // <Test content={this.state.inputVal}/>
           // <Table tableDatas={tableData} removeData={this.removeData} />
         }
       </div>
     );
+  }
+  componentDidMount() {
+    //只会被执行一次  一般放ajax请求
+    axios.get("api/todoalaist")
+      .then(res => {
+        if (res.data.code) {
+          this.setState(() => ({
+            list: [...res.data]
+          }));
+        }
+      })
+      .catch(() => {});
   }
   handleInput = e => {
     // const { value } = e.target;
@@ -50,15 +57,10 @@ class TodoList extends Component {
     });
   };
   handleAdd = () => {
-    this.setState(
-      prevState => ({
-        list: [...prevState.list, prevState.inputVal],
-        inputVal: ""
-      }),
-      () => {
-        console.log(this.ul.querySelectorAll("div").length);
-      }
-    );
+    this.setState(prevState => ({
+      list: [...prevState.list, prevState.inputVal],
+      inputVal: ""
+    }));
   };
   handleDelete = i => {
     let { list } = this.state;
